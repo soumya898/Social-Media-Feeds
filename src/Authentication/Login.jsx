@@ -28,7 +28,7 @@ const Login = ({ setShowModal }) => {
     <div className="min-h-screen flex flex-col justify-end items-center sm:justify-center sm:py-12 custom-login">
       <div className="bg-white p-5 sm:p-8 rounded-t-lg sm:rounded-lg shadow-lg w-full sm:w-100 md:w-80 lg:w-96 xl:w-96 text-center mx-auto sm:mb-0 mb-0">
         <h2 className="text-2xl font-bold text-gray-900 my-2 flex items-center justify-center" style={{fontFamily:'karla',fontSize:'32px'}}>
-          <img src='src\Authentication\logo.png' className="logo-icon"/>
+          <img src='https://github.com/soumya898/Social-Media-Feeds/blob/master/public/logo.png' className="logo-icon"/>
           Vibesnap
         </h2>
         <p className="text-md text-gray-600 mb-6">Moments That Matter, Shared Forever.</p>
