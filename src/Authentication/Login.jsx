@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from './firebaseConfig';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const Login = ({ setShowModal }) => {
   const [error, setError] = useState('');
@@ -102,4 +103,7 @@ const Login = ({ setShowModal }) => {
   );
 };
 
+Login.propTypes = {
+  setShowModal: PropTypes.func.isRequired, // Ensures it's a function and is required
+};
 export default Login;
