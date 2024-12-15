@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaDiscord, FaFacebookMessenger, FaBars, FaTwitter, FaHeart, FaShareSquare, FaCopy, FaWhatsapp, FaInstagramSquare, FaTelegram, FaFacebook, FaEnvelope, FaPlus, FaReddit } from 'react-icons/fa';
@@ -18,18 +20,13 @@ const FeedsPage = ({ photoUrl, firstName }) => {
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
 
-  const goToProfile = () => {
-    navigate('/profile');
-  };
-
-  const goToUpload = () => {
-    navigate('/upload');
-  };
+  const goToProfile = () => navigate('/profile');
+  const goToUpload = () => navigate('/upload');
 
   const getRandomTime = () => {
     const times = [
       '10 minutes ago',
-      '2 minute ago',
+      '2 minutes ago',
       '2 hours ago',
       '1 day ago',
       '2 days ago',
@@ -41,30 +38,33 @@ const FeedsPage = ({ photoUrl, firstName }) => {
     return times[Math.floor(Math.random() * times.length)];
   };
 
-  const styleHashtags = (caption) => {
-    return caption.split(' ').map((word, index) => {
-      return word.startsWith('#') ? (
-        <a key={index} href={`https://www.instagram.com/explore/tags/${word.slice(1)}`} className="text-blue-500" target="_blank" rel="noopener noreferrer">
+  const styleHashtags = (caption) =>
+    caption.split(' ').map((word, index) =>
+      word.startsWith('#') ? (
+        <a
+          key={index}
+          href={`https://www.instagram.com/explore/tags/${word.slice(1)}`}
+          className="text-blue-500"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {word}
         </a>
       ) : (
         word + ' '
-      );
-    });
-  };
+      )
+    );
 
   const fetchPosts = async (page) => {
     try {
-      const photoResponse = await axios.get('https://api.unsplash.com/search/photos', {
+      const { data: photoData } = await axios.get('https://api.unsplash.com/search/photos', {
         params: { query: 'random', orientation: 'squarish', per_page: 10, page },
-        headers: {
-          Authorization: import.meta.env.VITE_PIXELS_FETCH_API_KEY
-        }
+        headers: { Authorization: import.meta.env.VITE_PIXELS_FETCH_API_KEY }
       });
 
-      const videoResponse = await pexelsClient.videos.search({ query: 'Nature', per_page: 5 });
+      const { videos: videoData } = await pexelsClient.videos.search({ query: 'Nature', per_page: 5 });
 
-      const newPhotoPosts = photoResponse.data.results.map(post => ({
+      const newPhotoPosts = photoData.results.map((post) => ({
         id: post.id,
         user: { name: post.user.name, profile_image: post.user.profile_image.small },
         type: 'image',
@@ -74,7 +74,7 @@ const FeedsPage = ({ photoUrl, firstName }) => {
         likes: Math.floor(Math.random() * 500)
       }));
 
-      const newVideoPosts = videoResponse.videos.map(post => ({
+      const newVideoPosts = videoData.map((post) => ({
         id: post.id,
         user: { name: 'Video User', profile_image: 'https://via.placeholder.com/50' },
         type: 'video',
@@ -84,7 +84,7 @@ const FeedsPage = ({ photoUrl, firstName }) => {
         likes: Math.floor(Math.random() * 500)
       }));
 
-      setPosts(prevPosts => [...prevPosts, ...newPhotoPosts, ...newVideoPosts]);
+      setPosts((prevPosts) => [...prevPosts, ...newPhotoPosts, ...newVideoPosts]);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -100,7 +100,7 @@ const FeedsPage = ({ photoUrl, firstName }) => {
     const handleObserver = (entries) => {
       const target = entries[0];
       if (target.isIntersecting && !loading) {
-        setPage(prevPage => prevPage + 1);
+        setPage((prevPage) => prevPage + 1);
       }
     };
 
@@ -128,7 +128,11 @@ const FeedsPage = ({ photoUrl, firstName }) => {
   };
 
   const handleLike = (id) => {
-    setPosts(posts.map(post => post.id === id ? { ...post, liked: !post.liked, likes: post.liked ? post.likes - 1 : post.likes + 1 } : post));
+    setPosts((posts) =>
+      posts.map((post) =>
+        post.id === id ? { ...post, liked: !post.liked, likes: post.liked ? post.likes - 1 : post.likes + 1 } : post
+      )
+    );
   };
 
   const handleShare = (url) => {
@@ -136,10 +140,7 @@ const FeedsPage = ({ photoUrl, firstName }) => {
     setShowShareModal(true);
   };
 
-  const closeShareModal = () => {
-    setShowShareModal(false);
-  };
-
+  const closeShareModal = () => setShowShareModal(false);
   const copyUrl = () => {
     navigator.clipboard.writeText(shareUrl);
     alert('URL copied to clipboard!');
@@ -150,7 +151,7 @@ const FeedsPage = ({ photoUrl, firstName }) => {
       case 'recent':
         return [...posts].sort((a, b) => new Date(b.time) - new Date(a.time));
       case 'friends':
-        return [...posts];
+        return posts;
       case 'popular':
         return [...posts].sort((a, b) => b.likes - a.likes);
       default:
@@ -363,3 +364,6 @@ const FeedsPage = ({ photoUrl, firstName }) => {
 };
 
 export default FeedsPage;
+
+
+
