@@ -103,7 +103,5 @@ const Login = ({ setShowModal }) => {
   );
 };
 
-Login.propTypes = {
-  setShowModal: PropTypes.func.isRequired, // Ensures it's a function and is required
-};
+
 export default Login;
