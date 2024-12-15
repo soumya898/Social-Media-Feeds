@@ -1,13 +1,12 @@
-
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaDiscord, FaFacebookMessenger, FaBars, FaTwitter, FaHeart, FaShareSquare, FaCopy, FaWhatsapp, FaInstagramSquare, FaTelegram, FaFacebook, FaEnvelope, FaPlus, FaReddit } from 'react-icons/fa';
+import {
+  FaDiscord, FaFacebookMessenger, FaBars, FaTwitter, FaHeart, FaShareSquare, FaCopy, FaWhatsapp, 
+  FaInstagramSquare, FaTelegram, FaFacebook, FaEnvelope, FaPlus, FaReddit
+} from 'react-icons/fa';
 import axios from 'axios';
 import { IoClose } from "react-icons/io5";
-import { createClient } from 'pexels';
-
-const pexelsClient = createClient(import.meta.env.VITE_PEXELS_API_KEY);
+import { PexelApi } from '../PexelApi';
 
 const FeedsPage = ({ photoUrl, firstName }) => {
   const navigate = useNavigate();
@@ -25,15 +24,8 @@ const FeedsPage = ({ photoUrl, firstName }) => {
 
   const getRandomTime = () => {
     const times = [
-      '10 minutes ago',
-      '2 minutes ago',
-      '2 hours ago',
-      '1 day ago',
-      '2 days ago',
-      '1 week ago',
-      '1 month ago',
-      '2 months ago',
-      '1 year ago'
+      '10 minutes ago', '2 minutes ago', '2 hours ago', '1 day ago', 
+      '2 days ago', '1 week ago', '1 month ago', '2 months ago', '1 year ago'
     ];
     return times[Math.floor(Math.random() * times.length)];
   };
@@ -57,14 +49,18 @@ const FeedsPage = ({ photoUrl, firstName }) => {
 
   const fetchPosts = async (page) => {
     try {
-      const { data: photoData } = await axios.get('https://api.unsplash.com/search/photos', {
+      const photoResponse = await axios.get('https://api.unsplash.com/search/photos', {
         params: { query: 'random', orientation: 'squarish', per_page: 10, page },
         headers: { Authorization: import.meta.env.VITE_PIXELS_FETCH_API_KEY }
       });
 
-      const { videos: videoData } = await pexelsClient.videos.search({ query: 'Nature', per_page: 5 });
+      const videoResponse = await PexelApi.searchPhotos('Nature', { per_page: 5 });
 
-      const newPhotoPosts = photoData.results.map((post) => ({
+      // Log the response to understand its structure
+      console.log('Photo Response:', photoResponse);
+      console.log('Video Response:', videoResponse);
+
+      const newPhotoPosts = photoResponse.data.results.map((post) => ({
         id: post.id,
         user: { name: post.user.name, profile_image: post.user.profile_image.small },
         type: 'image',
@@ -74,7 +70,8 @@ const FeedsPage = ({ photoUrl, firstName }) => {
         likes: Math.floor(Math.random() * 500)
       }));
 
-      const newVideoPosts = videoData.map((post) => ({
+      // Ensure videoData.videos is an array
+      const newVideoPosts = (videoResponse.videos || []).map((post) => ({
         id: post.id,
         user: { name: 'Video User', profile_image: 'https://via.placeholder.com/50' },
         type: 'video',
@@ -364,6 +361,3 @@ const FeedsPage = ({ photoUrl, firstName }) => {
 };
 
 export default FeedsPage;
-
-
-
