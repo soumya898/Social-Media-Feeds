@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { FaLongArrowAltLeft, FaHeart, FaPlus } from "react-icons/fa";
 import axios from 'axios';
 import { doc, getDoc } from "firebase/firestore";
-
+import banner from "./banner.jpg"
 const ProfilePage = ({ updateUser }) => {
   const [user, setUser] = useState(null);
   const [photos, setPhotos] = useState([]);
@@ -98,12 +98,13 @@ const ProfilePage = ({ updateUser }) => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center">
       <div
-        className="relative w-full h-48 bg-cover bg-center"
+        className="relative w-full h-48 md:h-60 lg:h-70 bg-cover bg-center"
         style={{
-          backgroundImage: "url('https://s3-alpha-sig.figma.com/img/d4b7/bb5d/bd8b3943a763e1d2e13b607efc1e224e?Expires=1734912000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=A1pL5l3UkYsKUQu~NsQFaKRw7PlByESy7RxouuE3Hwmt3DSbVicU-RffRXt9ZbYvCf3TLgPf5e4FtpcGWpE~-hBjPWqgdRQ9FQaz9A4AidFggdpWXL8jGK~xF4R~y3IE0OIAtPPpzBuNvjkBXcS~LqiXBJcffEiSHIMsAezKcO2ZH5TdVX53gdtO2kvCSCGUvGCYbJKMPOaU~jH5fyJ03dWX8il2084C80kpIvu7LU1IgyXmN-lvDqmd-VORxD5y355D~n4HWpvJiRa9K9wrDttiGafSz1jqjW1ka-ncrIoiN-SvTyM-wJ8n3LMNUfkbbAACRvCHNe2DNemxjt3eQw__')",
-          backgroundSize: 'cover',
+          backgroundImage: `url(${banner})`, // Use the Banner variable correctly
+          backgroundSize: 'cover', // Ensure it covers the entire section
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
+
         }}
       >
         <FaLongArrowAltLeft className="absolute top-8 left-8 text-white text-2xl cursor-pointer" onClick={() => navigate('/feed')} />
