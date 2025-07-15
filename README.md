@@ -1,4 +1,4 @@
-# Social Media Feed Web Application
+# Vibesnap _ SOCIAL MEDIA FEED APP
 
 ## Overview
 This project is a social media feed web application designed with React.js. It features user authentication, infinite scrolling, and post creation with multimedia support, optimized for mobile and tablet devices. Users can register, log in, create and view posts with text, images, and videos, and interact with other users through personalized profiles.
